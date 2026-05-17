@@ -121,8 +121,6 @@ spec:
               x-kubernetes-validations:
                 - rule: "has(self.posture) || has(self.vulnerabilities)"
                   message: "spec must have at least one of: posture, vulnerabilities"
-                - rule: "!has(self.expiresAt) || self.expiresAt > '1970-01-01T00:00:00Z'"
-                  message: "expiresAt must be a valid timestamp"
             status:
               type: object
               properties:
