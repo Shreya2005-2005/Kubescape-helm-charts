@@ -1,0 +1,14 @@
+# SecurityException CRD permissions (added by lfx-2026-security-exception-crd)
+- apiGroups: ["kubescape.io"]
+  resources:
+    - securityexceptions
+    - clustersecurityexceptions
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["kubescape.io"]
+  resources:
+    - securityexceptions/status
+    - clustersecurityexceptions/status
+  verbs: ["get", "update", "patch"]
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["create", "patch"]

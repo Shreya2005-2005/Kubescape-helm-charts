@@ -1,0 +1,46 @@
+# Example SecurityException — skip C-0016 for nginx deployments
+# Apply: kubectl apply -f security-exception-example.yaml
+apiVersion: kubescape.io/v1beta1
+kind: SecurityException
+metadata:
+  name: skip-privileged-nginx
+  namespace: default
+  annotations:
+    managed-by: "gitops"
+    ticket: "JIRA-1234"
+spec:
+  author: "platform-team"
+  reason: accepted-risk
+  expiresAt: "2026-12-31T00:00:00Z"
+  match:
+    resources:
+      - apiGroup: apps
+        kind: Deployment
+        name: nginx-ingress
+    objectSelector:
+      matchLabels:
+        app: nginx-ingress
+  posture:
+    - controlID: C-0016
+      action: ignore
+    - controlID: C-0017
+      action: alert_only
+---
+# Example ClusterSecurityException — cluster-wide false positive
+apiVersion: kubescape.io/v1beta1
+kind: ClusterSecurityException
+metadata:
+  name: cluster-wide-c0046-exception
+spec:
+  author: "security-team"
+  reason: false-positive
+  expiresAt: "2026-12-31T00:00:00Z"
+  match:
+    namespaceSelector:
+      matchLabels:
+        environment: production
+    resources:
+      - kind: DaemonSet
+  posture:
+    - controlID: C-0046
+      action: ignore
